@@ -3,7 +3,7 @@ package com.example.model;
 import java.util.Date;
 
 /**
- * Created by nowcoder on 2016/7/7.
+ * Created by asus-Iabx on 2016/7/7.
  */
 public class Comment {
     private int id;
