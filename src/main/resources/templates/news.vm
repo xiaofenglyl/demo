@@ -1,0 +1,26 @@
+<html>
+<body>
+<pre>
+    hello vm.
+    ##hello vm.
+    #*
+        hello vm.hahaha.
+     *#
+    $!{value1}
+    #foreach($color in $colors)
+        Color: $!{foreach.index}/$!{foreach.count}:$!{color}
+
+    #end
+    #foreach($key in $map.keySet())
+        Map: $!{foreach.index}/$!{foreach.count}:$map.get($key) $!{key}
+
+    #end
+    $!{user.name}
+    $!{user.getName()}
+
+    #set($title="hello world")
+    Include #include("header.vm") <br>
+    Parse #parse("header.vm")
+</pre>
+</body>
+</html>
