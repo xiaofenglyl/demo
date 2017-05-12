@@ -20,6 +20,8 @@ public class LikeService {
      * @param entityId
      * @return
      */
+
+
     public int getLikeStatus(int userId,int entityType,int entityId)
     {
         String likeKey = RedisKeyUtil.getLikeKey(entityId,entityType);

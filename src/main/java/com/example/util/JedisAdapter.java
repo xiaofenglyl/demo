@@ -12,7 +12,6 @@ import redis.clients.jedis.JedisPool;
 @Service
 public class JedisAdapter implements InitializingBean {
 
-    private  JedisPool pool = null;
 
 
 
@@ -51,6 +50,9 @@ public class JedisAdapter implements InitializingBean {
            je.close();
        }
     }
+
+    private Jedis jedis = null;
+    private JedisPool pool = null;
 
     @Override
     public void afterPropertiesSet() throws Exception {
