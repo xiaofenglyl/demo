@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import com.example.async.EventModel;
+import com.example.async.EventProducer;
+import com.example.async.EventType;
 import com.example.model.EntityType;
 import com.example.model.HostHolder;
 import com.example.model.News;
@@ -29,13 +32,19 @@ public class LikeController {
     NewsService newsService;
 
 
+    @Autowired
+    EventProducer eventProducer;
+
 
     @RequestMapping(path = {"/like"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String like(@Param("newsId") int newsId) {
         long likeCount = likeService.like(hostHolder.getUser().getId(), EntityType.ENTITY_NEWS, newsId);
         newsService.updateLikeCount(newsId, (int) likeCount);
-
+        News news = newsService.getById(newsId);
+        eventProducer.fireEvent(new EventModel(EventType.LIKE)
+                .setEntityOwnerId(news.getUserId())
+                .setActorId(hostHolder.getUser().getId()).setEntityId(newsId));
         return DemoUtil.getJSONString(0, String.valueOf(likeCount));
     }
 

@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import com.example.async.EventModel;
+import com.example.async.EventProducer;
+import com.example.async.EventType;
 import com.example.service.UserService;
 import com.example.util.DemoUtil;
 import com.sun.deploy.net.HttpResponse;
@@ -18,6 +21,9 @@ import java.util.Map;
 public class LoginController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    EventProducer eventProducer;
 
     @RequestMapping(path="/reg/",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
@@ -64,6 +70,9 @@ public class LoginController {
                     cookie.setMaxAge(3600 * 24 * 5);
                 }
                 response.addCookie(cookie);
+                eventProducer.fireEvent(new
+                        EventModel(EventType.LOGIN).setActorId((int) map.get("userId"))
+                        .setExt("username", "牛客").setExt("to", "2832842085@qq.com"));
                 return DemoUtil.getJSONString(0, "成功");
             }
             else

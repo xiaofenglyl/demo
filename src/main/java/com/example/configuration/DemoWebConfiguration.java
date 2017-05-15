@@ -22,7 +22,8 @@ public class DemoWebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(passportIntercepter);
-        registry.addInterceptor(loginrequiredIntercepter).addPathPatterns("/setting*");
+        registry.addInterceptor(loginrequiredIntercepter).
+                addPathPatterns("/msg/*").addPathPatterns("/like").addPathPatterns("/dislike");;
         super.addInterceptors(registry);
     }
 }
