@@ -9,6 +9,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by asus-Iabx on 2017/5/5.
@@ -220,6 +221,35 @@ public class JedisAdapter implements InitializingBean {
     }
 
 
+    public long zadd(String key,double score,String member) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.zadd(key,score,member);
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            {
+                if (jedis != null)
+                    jedis.close();
+            }
+        }
+    }
+
+    public Set zrange(String key, long start, long end) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.zrange(key,start,end);
+        } catch (Exception e) {
+            return null;
+        } finally {
+            {
+                if (jedis != null)
+                    jedis.close();
+            }
+        }
+    }
 
 
 
