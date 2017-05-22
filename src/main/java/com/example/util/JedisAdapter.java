@@ -221,13 +221,13 @@ public class JedisAdapter implements InitializingBean {
     }
 
 
-    public long zadd(String key,double score,String member) {
+    public void zadd(String key,double score,String member) {
         Jedis jedis = null;
         try {
             jedis = pool.getResource();
-            return jedis.zadd(key,score,member);
+             jedis.zadd(key,score,member);
         } catch (Exception e) {
-            return 0;
+
         } finally {
             {
                 if (jedis != null)

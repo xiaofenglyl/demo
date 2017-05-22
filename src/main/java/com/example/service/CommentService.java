@@ -23,6 +23,10 @@ public class CommentService {
         return commentDAO.selectByEntity(entityId, entityType);
     }
 
+    public Comment getCommentByEntityId(int entityId,int entityType)
+    {
+        return commentDAO.selectByEntityId(entityId,entityType);
+    }
     public int addComment(Comment comment) {
         return commentDAO.addComment(comment);
     }

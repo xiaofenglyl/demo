@@ -23,4 +23,9 @@ public interface CommentDAO {
 
     @Select({"select count(id) from ", TABLE_NAME, " where entity_type=#{entityType} and entity_id=#{entityId}"})
     int getCommentCount(@Param("entityId") int entityId, @Param("entityType") int entityType);
+
+    //@Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id = ( select max(id) from ( select ",SELECT_FIELDS, " from ", TABLE_NAME, "where entity_type=#{entityType} and entity_id=#{entityId} ) as total) "})
+    //select * from comment where id=(select max(id) from(select * from comment where entity_type=1 and entity_id=12)as tt);
+    @Select({"select * from comment where id=(select max(id) from(select * from comment where entity_type=#{entityType} and entity_id=#{entityId})as tt)"})
+    Comment selectByEntityId(@Param("entityId") int entityId, @Param("entityType") int entityType);
 }
