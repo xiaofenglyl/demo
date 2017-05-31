@@ -25,7 +25,7 @@ public class JedisAdapter implements InitializingBean {
         System.out.println(String.format("%d,%s",index,obj));
     }
 
-    public static void main(String[] args)
+    /*public static void main(String[] args)
     {
         Jedis jedis = new Jedis();
         jedis.flushAll();
@@ -54,7 +54,7 @@ public class JedisAdapter implements InitializingBean {
            System.out.println("POOL" + j);
            je.close();
        }
-    }
+    }*/
 
     private Jedis jedis = null;
     private JedisPool pool = null;

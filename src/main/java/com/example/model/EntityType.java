@@ -1,7 +1,7 @@
 package com.example.model;
 
 /**
- * Created by nowcoder on 2016/7/7.
+ *Created by asus-Iabx on 2017/5/14.
  */
 public class EntityType {
     public static int ENTITY_NEWS = 1;

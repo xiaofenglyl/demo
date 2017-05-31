@@ -1,7 +1,7 @@
 package com.example.async;
 
 /**
- * Created by nowcoder on 2016/7/14.
+ * Created by asus-Iabx on 2017/5/14.
  */
 public enum EventType {
     LIKE(0),

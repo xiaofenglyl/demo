@@ -3,7 +3,7 @@ package com.example.model;
 import java.util.Date;
 
 /**
- * Created by rainday on 16/6/30.
+ * Created by asus-Iabx on 2017/4/18.
  */
 public class News {
 
