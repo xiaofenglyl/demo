@@ -56,4 +56,7 @@ public class LikeController {
         newsService.updateLikeCount(newsId, (int) likeCount);
         return DemoUtil.getJSONString(0, String.valueOf(likeCount));
     }
+
+
+
 }

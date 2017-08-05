@@ -6,6 +6,7 @@ import com.example.util.DemoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,12 +23,21 @@ public class NewsService {
     @Autowired
     private NewsDAO newsDAO;
 
+    @Autowired
+    SensitiveService sensitiveService;
+
     public List<News> getLatestNews(int userId,int limit,int offset)
     {
         return newsDAO.selectByUserIdAndOffset(userId, limit, offset);
     }
 
     public int addNews(News news) {
+        // 敏感词过滤
+        news.setTitle(HtmlUtils.htmlEscape(news.getTitle()));
+        news.setLink(HtmlUtils.htmlEscape(news.getLink()));
+        news.setTitle(sensitiveService.filter(news.getTitle()));
+        news.setLink(sensitiveService.filter(news.getLink()));
+
         newsDAO.addNews(news);
         return news.getId();
     }

@@ -13,6 +13,15 @@ public class Comment {
     private String content;
     private Date createdDate;
     private int status;
+    private int likeCount;
+
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
 
     public int getId() {
         return id;

@@ -86,6 +86,7 @@ public class HomeController {
                 zset_key = sequenceUtil.addNews(news,comment);
             }
             Set zset = sequenceUtil.sortNews(zset_key);
+            System.out.println("key="+zset.size());
             Iterator<String> newsI = zset.iterator();
             LinkedList<News> newnewsList = new LinkedList<>();
             while(newsI.hasNext())
