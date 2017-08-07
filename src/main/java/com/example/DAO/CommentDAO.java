@@ -28,4 +28,13 @@ public interface CommentDAO {
     //select * from comment where id=(select max(id) from(select * from comment where entity_type=1 and entity_id=12)as tt);
     @Select({"select * from comment where id=(select max(id) from(select * from comment where entity_type=#{entityType} and entity_id=#{entityId})as tt)"})
     Comment selectByEntityId(@Param("entityId") int entityId, @Param("entityType") int entityType);
+
+    @Select({"select ", SELECT_FIELDS , " from ", TABLE_NAME, " where id=#{id}"})
+    Comment getById(int id);
+
+    @Update({"update ", TABLE_NAME, " set likecount = #{likeCount} where id=#{id}"})
+    int updateLikeCount(@Param("id") int id, @Param("likeCount") int likeCount);
+
+    @Select({"select count(id) from ", TABLE_NAME, " where user_id=#{userId}"})
+    int getUserCommentCount(int userId);
 }

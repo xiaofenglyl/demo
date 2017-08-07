@@ -1,11 +1,7 @@
 package com.example.controller;
 
 import com.example.model.*;
-import com.example.service.CommentService;
-import com.example.service.LikeService;
-import com.example.service.NewsService;
-import com.example.service.UserService;
-import com.example.service.SequenceUtil;
+import com.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +33,9 @@ public class HomeController {
     @Autowired
     SequenceUtil sequenceUtil;
 
+    @Autowired
+    FollowService followService;
+
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(@RequestParam(value = "userId", defaultValue = "0") int userId,
                         Model model,
@@ -49,9 +48,30 @@ public class HomeController {
     @RequestMapping(path = {"/user/{userId}/"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String userIndex(@PathVariable("userId") int userId, Model model,
                             @RequestParam(value = "pop",defaultValue = "0") int pop) {
-        model.addAttribute("pop",pop);
         model.addAttribute("vos", getNews(userId, 0, 10));
-        return "home";
+
+        User user = userService.getuser(userId);
+        ViewObject vo = new ViewObject();
+        vo.set("user", user);
+        vo.set("commentCount", commentService.getUserCommentCount(userId));
+        vo.set("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, userId));
+        vo.set("followeeCount", followService.getFolloweeCount(userId, EntityType.ENTITY_USER));
+        if (hostHolder.getUser() != null) {
+            vo.set("followed", followService.isFollower(hostHolder.getUser().getId(), EntityType.ENTITY_USER, userId));
+        } else {
+            vo.set("followed", false);
+        }
+        model.addAttribute("profileUser", vo);
+        model.addAttribute("pop",pop);
+        return "profile";
+
+
+
+
+
+        /*
+        model.addAttribute("vos", getNews(userId, 0, 10));
+        return "home";*/
     }
 
     private List<ViewObject> getNews(int userId, int offset, int limit) {

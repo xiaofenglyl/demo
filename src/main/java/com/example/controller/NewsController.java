@@ -116,9 +116,11 @@ public class NewsController {
                 int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId() : 0;
                 if (localUserId != 0) {
                     model.addAttribute("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId()));
+                    model.addAttribute("likec", likeService.getLikeStatus(localUserId, EntityType.ENTITY_COMMENT, news.getId()));
                     //System.out.println(likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId()));
                 } else {
                     model.addAttribute("like", 0);
+                    model.addAttribute("likec", 0);
                 }
 
 

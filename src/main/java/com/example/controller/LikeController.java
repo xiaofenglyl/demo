@@ -3,9 +3,11 @@ package com.example.controller;
 import com.example.async.EventModel;
 import com.example.async.EventProducer;
 import com.example.async.EventType;
+import com.example.model.Comment;
 import com.example.model.EntityType;
 import com.example.model.HostHolder;
 import com.example.model.News;
+import com.example.service.CommentService;
 import com.example.service.LikeService;
 import com.example.service.NewsService;
 import com.example.util.DemoUtil;
@@ -35,6 +37,8 @@ public class LikeController {
     @Autowired
     EventProducer eventProducer;
 
+    @Autowired
+    CommentService commentService;
 
     @RequestMapping(path = {"/like"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
@@ -54,6 +58,28 @@ public class LikeController {
         long likeCount = likeService.disLike(hostHolder.getUser().getId(), EntityType.ENTITY_NEWS, newsId);
         // 更新喜欢数
         newsService.updateLikeCount(newsId, (int) likeCount);
+        return DemoUtil.getJSONString(0, String.valueOf(likeCount));
+    }
+
+
+    @RequestMapping(path = {"/likec"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public String likec(@Param("commentId") int commentId) {
+        long likeCount = likeService.like(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, commentId);
+        commentService.updateLikeCount(commentId, (int) likeCount);
+        Comment comment = commentService.getById(commentId);
+        eventProducer.fireEvent(new EventModel(EventType.LIKE)
+                .setEntityOwnerId(comment.getUserId())
+                .setActorId(hostHolder.getUser().getId()).setEntityId(commentId));
+        return DemoUtil.getJSONString(0, String.valueOf(likeCount));
+    }
+
+    @RequestMapping(path = {"/dislikec"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public String dislikec(@Param("commentId") int commentId) {
+        long likeCount = likeService.disLike(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, commentId);
+        // 更新喜欢数
+        commentService.updateLikeCount(commentId, (int) likeCount);
         return DemoUtil.getJSONString(0, String.valueOf(likeCount));
     }
 

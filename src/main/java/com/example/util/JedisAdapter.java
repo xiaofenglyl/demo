@@ -8,6 +8,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,37 @@ public class JedisAdapter implements InitializingBean {
     {
         System.out.println(String.format("%d,%s",index,obj));
     }
+
+    /*
+    public static void main(String[] args)
+    {
+        Jedis jedis = new Jedis("redis://localhost:6379/9");
+        jedis.flushDB();
+        jedis.set("hello","world");
+        jedis.rename("hello","newhello");
+        jedis.setex("newhello2",15,"world");
+        jedis.incrBy("number",1);
+        jedis.set("number","0");
+
+
+
+        String listName = "listname";
+        jedis.del(listName);
+        for(int i = 0;i < 10;i++)
+        {
+            jedis.lpush(listName,"a" + String.valueOf(i));
+        }
+        print(1,jedis.lrange(listName,0,5));
+        print(2,jedis.linsert(listName, BinaryClient.LIST_POSITION.AFTER,"a4","xxx"));
+        print(3,jedis.lrange(listName,0,jedis.llen(listName)));
+
+        String hashkey = "newName";
+        jedis.hset(hashkey,"name","jim");
+        jedis.hsetnx(hashkey,"name","tom");
+        print(4,jedis.hgetAll(hashkey));
+        print(5,jedis.srandmember("commentlike",2));
+
+    }*/
 
     /*public static void main(String[] args)
     {
@@ -64,11 +96,71 @@ public class JedisAdapter implements InitializingBean {
         pool = new JedisPool("localhost",6379);
     }
 
-    private Jedis getJedis()
+    public Jedis getJedis()
     {
         return pool.getResource();
     }
 
+    public List<Object> exec(Transaction tx, Jedis jedis) {
+        try {
+            return tx.exec();
+        } catch (Exception e) {
+
+            tx.discard();
+        } finally {
+            if (tx != null) {
+                try {
+                    tx.close();
+                } catch (IOException ioe) {
+                    // ..
+                }
+            }
+
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+    public Set<String> zrange(String key, int start, int end) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.zrange(key, start, end);
+        } catch (Exception e) {
+
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+    public Set<String> zrevrange(String key, int start, int end) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.zrevrange(key, start, end);
+        } catch (Exception e) {
+
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+    public Transaction multi(Jedis jedis) {
+        try {
+            return jedis.multi();
+        } catch (Exception e) {
+
+        } finally {
+        }
+        return null;
+    }
     public String get(String key) {
         Jedis jedis = null;
         try {
@@ -250,7 +342,35 @@ public class JedisAdapter implements InitializingBean {
             }
         }
     }
+    public long zcard(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.zcard(key);
+        } catch (Exception e) {
+           // logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
 
+    public Double zscore(String key, String member) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.zscore(key, member);
+        } catch (Exception e) {
+            //logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
 
 
 }

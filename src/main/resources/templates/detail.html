@@ -92,9 +92,16 @@
             <div id="comments" class="comments">
                 #foreach($commentvo in $comments)
                 <div class="votebarc">
-                    <button class="click-like up" aria-pressed="false" title="赞同"><i class="vote-arrow"></i><span class="count">$!{news.likeCount}</span></button>
-                    <button class="click-dislike down" aria-pressed="true" title="反对"><i class="vote-arrow"></i>
-                    </button>
+                    #if ($likec > 0)
+                    <button class="click-likec up pressed" data-id="$!{commentvo.comment.id}" title="赞同"><i class="vote-arrow"></i><span class="count">$!{commentvo.comment.likeCount}</span></button>
+                    #else
+                    <button class="click-likec up" data-id="$!{commentvo.comment.id}" title="赞同"><i class="vote-arrow"></i><span class="count">$!{commentvo.comment.likeCount}</span></button>
+                    #end
+                    #if($likec < 0)
+                    <button class="click-dislikec down pressed" data-id="$!{commentvo.comment.id}" title="反对"><i class="vote-arrow"></i></button>
+                    #else
+                    <button class="click-dislikec down" data-id="$!{commentvo.comment.id}" title="反对"><i class="vote-arrow"></i></button>
+                    #end
                 </div>
 
                 <div class="media">

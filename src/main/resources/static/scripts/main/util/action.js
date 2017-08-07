@@ -3,6 +3,12 @@
     $.extend(Action, {
         like: fLike,
         dislike: fDislike,
+        likec: fLikec,
+        dislikec: fDislikec,
+        followUser: fFollowUser,
+        unFollowUser: fUnFollowUser,
+        followQuestion: fFollowQuestion,
+        unFollowQuestion: fUnFollowQuestion,
         post: fPost
     });
 
@@ -24,6 +30,16 @@
             always: oConf.always
         });
     }
+    function fLikec(oConf) {
+        var that = this;
+        that.post({
+            url: '/likec',
+            data: {commentId: oConf.commentId},
+            call: oConf.call,
+            error: oConf.error,
+            always: oConf.always
+        });
+    }
 
     /**
      * 不喜欢
@@ -38,6 +54,93 @@
         that.post({
             url: '/dislike',
             data: {newsId: oConf.newsId},
+            call: oConf.call,
+            error: oConf.error,
+            always: oConf.always
+        });
+    }
+    function fDislikec(oConf) {
+        var that = this;
+        that.post({
+            url: '/dislikec',
+            data: {commentId: oConf.commentId},
+            call: oConf.call,
+            error: oConf.error,
+            always: oConf.always
+        });
+    }
+
+
+    /**
+     * 关注用户
+     * @param   {Object} oConf
+     *  @param  {String} oConf.userId 用户id
+     *  @param  {Function} oConf.call 成功回调
+     *  @param  {Function} oConf.error 失败回调
+     *  @param  {Function} oConf.always 操作的回调
+     */
+    function fFollowUser(oConf) {
+        var that = this;
+        that.post({
+            url: '/followUser',
+            data: {userId: oConf.userId},
+            call: oConf.call,
+            error: oConf.error,
+            always: oConf.always
+        });
+    }
+
+    /**
+     * 取消关注用户
+     * @param   {Object} oConf
+     *  @param  {String} oConf.userId 用户id
+     *  @param  {Function} oConf.call 成功回调
+     *  @param  {Function} oConf.error 失败回调
+     *  @param  {Function} oConf.always 操作的回调
+     */
+    function fUnFollowUser(oConf) {
+        var that = this;
+        that.post({
+            url: '/unfollowUser',
+            data: {userId: oConf.userId},
+            call: oConf.call,
+            error: oConf.error,
+            always: oConf.always
+        });
+    }
+
+    /**
+     * 关注问题
+     * @param   {Object} oConf
+     *  @param  {String} oConf.questionId 问题id
+     *  @param  {Function} oConf.call 成功回调
+     *  @param  {Function} oConf.error 失败回调
+     *  @param  {Function} oConf.always 操作的回调
+     */
+    function fFollowQuestion(oConf) {
+        var that = this;
+        that.post({
+            url: '/followQuestion',
+            data: {questionId: oConf.questionId},
+            call: oConf.call,
+            error: oConf.error,
+            always: oConf.always
+        });
+    }
+
+    /**
+     * 取消关注问题
+     * @param   {Object} oConf
+     *  @param  {String} oConf.questionId 问题id
+     *  @param  {Function} oConf.call 成功回调
+     *  @param  {Function} oConf.error 失败回调
+     *  @param  {Function} oConf.always 操作的回调
+     */
+    function fUnFollowQuestion(oConf) {
+        var that = this;
+        that.post({
+            url: '/unfollowQuestion',
+            data: {questionId: oConf.questionId},
             call: oConf.call,
             error: oConf.error,
             always: oConf.always

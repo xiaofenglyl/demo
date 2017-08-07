@@ -12,7 +12,10 @@
         },
         events: {
             'click button.click-like': fClickLike,
-            'click button.click-dislike': fClickDisLike
+            'click button.click-dislike': fClickDisLike,
+            'click button.click-likec': fClickLikec,
+            'click button.click-dislikec': fClickDisLikec
+
         }
     });
 
@@ -98,5 +101,59 @@
             }
         });
     }
+
+
+
+    function fClickLikec(oEvent) {
+        var that = this;
+        var oEl = $(oEvent.currentTarget);
+        var sId = $.trim(oEl.attr('data-id'));
+        // 已经操作过 || 不存在Id || 正在提交 ，则忽略
+        if (oEl.hasClass('pressed') || !sId || that.actioning) {
+            return;
+        }
+        that.actioning = true;
+        ActionUtil.likec({
+            commentId: sId,
+            call: function (oResult) {
+                oEl.find('span.count').html(oResult.msg);
+                oEl.addClass('pressed');
+                oEl.parent().find('.click-dislikec').removeClass('pressed');
+            },
+            error: function () {
+                alert('出现错误，请重试');
+            },
+            always: function () {
+                that.actioning = false;
+            }
+        });
+    }
+
+    function fClickDisLikec(oEvent) {
+        var that = this;
+        var oEl = $(oEvent.currentTarget);
+        var sId = $.trim(oEl.attr('data-id'));
+        // 已经操作过 || 不存在Id || 正在提交 ，则忽略
+        if (oEl.hasClass('pressed') || !sId || that.actioning) {
+            return;
+        }
+        that.actioning = true;
+        ActionUtil.dislikec({
+            commentId: sId,
+            call: function (oResult) {
+                oEl.addClass('pressed');
+                var oLikeBtn = oEl.parent().find('.click-likec');
+                oLikeBtn.removeClass('pressed');
+                oLikeBtn.find('span.count').html(oResult.msg);
+            },
+            error: function () {
+                alert('出现错误，请重试');
+            },
+            always: function () {
+                that.actioning = false;
+            }
+        });
+    }
+
 
 })(window);

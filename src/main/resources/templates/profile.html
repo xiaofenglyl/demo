@@ -1,0 +1,160 @@
+#parse("header.html")
+<link rel="stylesheet" href="../../styles/index.css">
+<link rel="stylesheet" href="../../styles/detail.css">
+    <div class="zg-wrap zu-main clearfix " role="main">
+        <div class="zm-profile-section-wrap zm-profile-followee-page">
+            <!--
+                <div class="zm-profile-section-head">
+                    <span class="zm-profile-section-name">
+                        <a href="#">${profileUser.user.name}</a> 关注了 ${profileUser.followerCount} 人
+                    </span>
+                </div>-->
+                <div class="zm-profile-section-list">
+                    <div id="zh-profile-follows-list">
+                        <div class="zh-general-list clearfix">
+                            <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
+                                <div class="zg-right">
+                                    #if ($profileUser.followed)
+                                    <button class="zg-btn zg-btn-unfollow zm-rich-follow-btn small nth-0
+                                    js-follow-user" data-status="1" data-id="$profileUser.user.id">取消关注</button>
+                                    #else
+                                    <button class="zg-btn zg-btn-follow zm-rich-follow-btn small nth-0
+                                    js-follow-user" data-id="$profileUser.user.id">关注</button>
+                                    #end
+                                </div>
+                                <a title="Barty" class="zm-item-link-avatar" href="/user/${profileUser.user.id}">
+                                    <img src="${profileUser.user.headUrl}" class="zm-item-img-avatar">
+                                </a>
+                                <div class="zm-list-content-medium">
+                                    <h2 class="zm-list-content-title"><a data-tip="p$t$buaabarty" href="/user/${profileUser.user.id}" class="zg-link">${profileUser.user.name}</a></h2>
+
+                                    <!-- <div class="zg-big-gray">计蒜客教研首席打杂</div> -->
+                                    <div class="details zg-gray">
+                                        <a target="_blank" href="/user/${profileUser.user.id}/followers" class="zg-link-gray-normal">${profileUser.followerCount}粉丝</a>
+                                        /
+                                        <a target="_blank" href="/user/${profileUser.user.id}/followees" class="zg-link-gray-normal">${profileUser.followeeCount}关注</a>
+                                        /
+                                        <a target="_blank" href="#" class="zg-link-gray-normal">${profileUser.commentCount} 回答</a>
+                                        /
+                                        <a target="_blank" href="#" class="zg-link-gray-normal">548 赞同</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        <div class="zu-main-content">
+            <div class="zu-main-content-inner">
+                <div class="zg-section" id="zh-home-list-title">
+                    <i class="zg-icon zg-icon-feedlist"></i>最新动态
+                    <span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
+                        <a href="https://nowcoder.com/settings/filter" class="zg-link-gray-normal">
+                            <i class="zg-icon zg-icon-settings"></i>设置
+                        </a>
+                    </span>
+                </div>
+                <div class="container" id="daily">
+                    <div class="jscroll-inner">
+                        <div class="daily">
+
+                            #set($cur_date = '')
+                            #foreach($vo in $vos)
+                            #if ($cur_date != $date.format('yyyy-MM-dd', $vo.news.createdDate))
+                            #if ($foreach.index > 0)
+                        </div> ## 上一个要收尾
+                        #end
+                        #set($cur_date = $date.format('yyyy-MM-dd', $vo.news.createdDate))
+                        <h3 class="date">
+                            <i class="fa icon-calendar"></i>
+                            <span>头条资讯 &nbsp; $date.format('yyyy-MM-dd', $vo.news.createdDate)</span>
+                        </h3>
+
+                        <div class="posts">
+                            #end
+                            <div class="post">
+                                <div class="votebar">
+                                    #if ($vo.like > 0)
+                                    <button class="click-like up pressed" data-id="$!{vo.news.id}" title="赞同"><i class="vote-arrow"></i><span class="count">$!{vo.news.likeCount}</span></button>
+                                    #else
+                                    <button class="click-like up" data-id="$!{vo.news.id}" title="赞同"><i class="vote-arrow"></i><span class="count">$!{vo.news.likeCount}</span></button>
+                                    #end
+                                    #if($vo.like < 0)
+                                    <button class="click-dislike down pressed" data-id="$!{vo.news.id}" title="反对"><i class="vote-arrow"></i></button>
+                                    #else
+                                    <button class="click-dislike down" data-id="$!{vo.news.id}" title="反对"><i class="vote-arrow"></i></button>
+                                    #end
+                                </div>
+                                <div class="content" data-url="/news/$!{news.id}">
+                                    <div >
+                                        <img class="content-img" src="$!{vo.news.image}?x-oss-process=image/resize,m_lfit,h_60,w_60" alt="">
+                                    </div>
+                                    <div class="content-main">
+                                        <h3 class="title">
+                                            <a target="_blank" rel="external nofollow" href="/news/$!{vo.news.id}">$!{vo.news.title}</a>
+                                        </h3>
+                                        <div class="meta">
+                                            $!{vo.news.link}
+                                            <span>
+                                            <i class="fa icon-comment"></i> $!{vo.news.commentCount}
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-avatar">
+                                        <a href="/user/$!{vo.user.id}/"><img width="32" class="img-circle" src="$!{vo.user.headUrl}"></a>
+                                    </div>
+
+                                    <!--
+                                    <div class="info">
+                                        <h5>分享者</h5>
+
+                                        <a href="http://nowcoder.com/u/251205"><img width="48" class="img-circle" src="http://images.nowcoder.com/images/20141231/622873_1420036789276_622873_1420036771761_%E8%98%91%E8%8F%87.jpg@0e_200w_200h_0c_1i_1o_90Q_1x" alt="Thumb"></a>
+
+                                        <h4 class="m-b-xs">冰燕</h4>
+                                        <a class="btn btn-default btn-xs" href="http://nowcoder.com/signin"><i class="fa icon-eye"></i> 关注TA</a>
+                                    </div>
+                                    -->
+                                </div>
+
+                                <div class="subject-name">来自 <a href="/user/$!{vo.user.id}/">$!{vo.user.name}</a></div>
+                            </div>
+
+                            <!--
+                            <div class="alert alert-warning subscribe-banner" role="alert">
+                              《头条八卦》，每日 Top 3 通过邮件发送给你。      <a class="btn btn-info btn-sm pull-right" href="http://nowcoder.com/account/settings">立即订阅</a>
+                            </div>
+                            -->
+                            #if ($foreach.count == $vos.size()) ##最后有个元素要收尾
+                        </div>
+                        #end
+
+                        #end
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    </div>
+#parse("js.html")
+#if ($pop)
+<script>
+    window.loginpop = $!{pop};
+</script>
+#end
+<script type="text/javascript" src="/scripts/main/site/profile.js"></script>
+#parse("footer.html")
